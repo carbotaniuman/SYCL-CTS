@@ -12,14 +12,6 @@
 #include <catch2/catch_tostring.hpp>
 #include <sycl/sycl.hpp>
 
-// TODO: Remove when all implementations support the sycl::errc enum
-#if SYCL_CTS_COMPILING_WITH_ADAPTIVECPP
-#define SYCL_CTS_SUPPORT_HAS_ERRC_ENUM 0
-#else
-#define SYCL_CTS_SUPPORT_HAS_ERRC_ENUM 1
-#endif
-
-#if SYCL_CTS_SUPPORT_HAS_ERRC_ENUM == 1
 CATCH_REGISTER_ENUM(sycl::errc, sycl::errc::success, sycl::errc::runtime,
                     sycl::errc::kernel, sycl::errc::accessor,
                     sycl::errc::nd_range, sycl::errc::event,
@@ -29,6 +21,5 @@ CATCH_REGISTER_ENUM(sycl::errc, sycl::errc::success, sycl::errc::runtime,
                     sycl::errc::feature_not_supported,
                     sycl::errc::kernel_not_supported,
                     sycl::errc::backend_mismatch);
-#endif
 
 #endif  // __SYCLCTS_UTIL_SYCL_ENUMS_H
