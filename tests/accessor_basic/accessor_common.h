@@ -604,7 +604,7 @@ void check_zero_length_buffer_constructor(GetAccFunctorT get_accessor_functor) {
                   acc, res_acc, check_iterator_methods);
             });
           } else if constexpr (Target == sycl::target::device) {
-            cgh.parallel_for_work_group(sycl::range(1), [=](sycl::group<1>) {
+            cgh.parallel_for(sycl::range(1), [=](sycl::id<1>) {
               check_empty_accessor_constructor_post_conditions(
                   acc, res_acc, check_iterator_methods);
             });
@@ -724,7 +724,7 @@ void check_zero_dim_constructor(GetAccFunctorT get_accessor_functor,
               read_write_zero_dim_acc<DataT, AccessMode>(acc_instance, res_acc);
             });
           } else if constexpr (Target == sycl::target::device) {
-            cgh.parallel_for_work_group(r, [=](sycl::group<1>) {
+            cgh.parallel_for(r, [=](sycl::id<1>) {
               auto&& acc_instance =
                   (detail::invoke_helper{modify_accessor} = ... = acc);
               read_write_zero_dim_acc<DataT, AccessMode>(acc_instance, res_acc);
@@ -846,8 +846,8 @@ void check_common_constructor(GetAccFunctorT get_accessor_functor,
               }
             });
           } else if constexpr (Target == sycl::target::device) {
-            cgh.parallel_for_work_group(
-                sycl::range(1), [=](sycl::group<1>) {
+            cgh.parallel_for(
+                sycl::range(1), [=](sycl::id<1>) {
                   auto&& acc_instance =
                       (detail::invoke_helper{modify_accessor} = ... = acc);
                   if constexpr (0 != Dimension) {
@@ -960,7 +960,7 @@ void check_no_init_prop(GetAccFunctorT get_accessor_functor) {
               write_read_acc<DataT, Dimension, AccessMode>(acc, res_acc);
             });
           } else if (Target == sycl::target::device) {
-            cgh.parallel_for_work_group(sycl::range(1), [=](sycl::group<1>) {
+            cgh.parallel_for(sycl::range(1), [=](sycl::id<1>) {
               write_read_acc<DataT, Dimension, AccessMode>(acc, res_acc);
             });
           }
